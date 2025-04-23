@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>UI_OpenAPI</name>
+    </assembly>
+    <members>
+        <member name="P:UI_OpenAPI.Config.AppSettings.JwtIssuer">
+            <summary>
+            اهراز اطلاعات
+            </summary>
+        </member>
+        <member name="P:UI_OpenAPI.Config.AppSettings.JwtAudience">
+            <summary>
+            آدرس
+            </summary>
+        </member>
+        <member name="P:UI_OpenAPI.Config.AppSettings.JwtKey">
+            <summary>
+            کلید
+            </summary>
+        </member>
+        <member name="P:UI_OpenAPI.Config.AppSettings.SomeOtherSetting">
+            <summary>
+            تنظیمات
+            </summary>
+        </member>
+        <member name="T:UI_OpenAPI.Controllers.WeatherForecastController">
+            <summary>
+            کنترلر پیش‌بینی آب و هوا
+            </summary>
+        </member>
+        <member name="M:UI_OpenAPI.Controllers.WeatherForecastController.#ctor(Microsoft.Extensions.Logging.ILogger{UI_OpenAPI.Controllers.WeatherForecastController})">
+            <summary>
+            سازنده کنترلر پیش‌بینی آب و هوا
+            </summary>
+            <param name="logger"></param>
+        </member>
+        <member name="M:UI_OpenAPI.Controllers.WeatherForecastController.GetWeatherForecast(UI_OpenAPI.WeatherForecast)">
+            <summary>
+            متد برای دریافت پیش‌بینی آب و هوا
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UI_OpenAPI.Controllers.WeatherForecastController.PostWeatherForecast(UI_OpenAPI.WeatherForecast)">
+            <summary>
+            ثبت وضعیت
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="T:UI_OpenAPI.WeatherForecast">
+             <summary>
+            model آب و هوا
+             </summary>
+        </member>
+        <member name="P:UI_OpenAPI.WeatherForecast.Date">
+            <summary>
+            تاریخ آب و هوا
+            </summary>
+        </member>
+        <member name="P:UI_OpenAPI.WeatherForecast.TemperatureC">
+            <summary>
+            درجه حرارت به سانتی‌گراد
+            </summary>
+        </member>
+        <member name="P:UI_OpenAPI.WeatherForecast.TemperatureF">
+            <summary>
+            درجه حرارت به فارنهایت
+            </summary>
+        </member>
+        <member name="P:UI_OpenAPI.WeatherForecast.Summary">
+            <summary>
+            شرح وضعیت آب و هوا
+            </summary>
+        </member>
+    </members>
+</doc>
