@@ -76,14 +76,14 @@
 ### Swagger UI
 Swagger UI توضیحات XML (مانند توضیحات فارسی) را به‌خوبی نمایش می‌دهد و برای تست API با احراز هویت JWT مناسب است.
 
-![Swagger UI - Image 1](images/1.jpg)
-![Swagger UI - Image 2](images/2.jpg)
+![Swagger UI - Image 1](Image/1.jpg)
+![Swagger UI - Image 2](Image/2.jpg)
 
 ### Scalar
 Scalar یک رابط کاربری مدرن برای نمایش مستندات OpenAPI است، اما ممکن است توضیحات XML را نمایش ندهد.
 
-![Scalar - Image 3](images/3.jpg)
-![Scalar - Image 4](images/4.jpg)
+![Scalar - Image 3](Image/3.jpg)
+![Scalar - Image 4](Image/4.jpg)
 
 ## 📖 نحوه‌ی تست API
 1. **احراز هویت**:
