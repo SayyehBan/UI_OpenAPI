@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Scalar.AspNetCore;
 using Microsoft.OpenApi.Models;
 using Microsoft.IdentityModel.Tokens;
-using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using UI_OpenAPI.Config;
+using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -171,7 +171,10 @@ if (app.Environment.IsDevelopment())
     });
 
     // فعال‌سازی Swagger و تنظیم Swagger UI
-    app.UseSwagger();
+    app.UseSwagger(c =>
+    {
+        c.OpenApiVersion = OpenApiSpecVersion.OpenApi2_0;
+    });
     app.UseSwaggerUI(options =>
     {
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "My API Documentation");
