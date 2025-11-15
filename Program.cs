@@ -5,11 +5,10 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Scalar.AspNetCore;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using UI_OpenAPI.Config;
-using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -77,7 +76,7 @@ builder.Services.AddOpenApi(options =>
 
         // افزودن طرح امنیتی Bearer JWT برای Scalar
         doc.Components ??= new OpenApiComponents();
-        doc.Components.SecuritySchemes ??= new Dictionary<string, OpenApiSecurityScheme>();
+        doc.Components.SecuritySchemes ??= new Dictionary<string, IOpenApiSecurityScheme>();
         doc.Components.SecuritySchemes["Bearer"] = new OpenApiSecurityScheme
         {
             Type = SecuritySchemeType.Http,
@@ -87,21 +86,8 @@ builder.Services.AddOpenApi(options =>
         };
 
         // اعمال قفل سراسری به تمام عملیات‌ها
-        doc.SecurityRequirements ??= new List<OpenApiSecurityRequirement>();
-        doc.SecurityRequirements.Add(new OpenApiSecurityRequirement
-        {
-            {
-                new OpenApiSecurityScheme
-                {
-                    Reference = new OpenApiReference
-                    {
-                        Type = ReferenceType.SecurityScheme,
-                        Id = "Bearer"
-                    }
-                },
-                new List<string>()
-            }
-        });
+        doc.Security ??= new List<OpenApiSecurityRequirement>();
+
 
         return Task.CompletedTask;
     });
@@ -128,21 +114,17 @@ builder.Services.AddSwaggerGen(options =>
     });
 
     // اعمال احراز هویت JWT به تمام عملیات‌ها در Swagger UI
-    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    options.AddSecurityDefinition("bearer", new OpenApiSecurityScheme
     {
-        {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            new List<string>()
-        }
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        Description = "JWT Authorization header using the Bearer scheme."
     });
-
+    options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
+    {
+        [new OpenApiSecuritySchemeReference("bearer", document)] = []
+    });
     // اتصال فایل XML به مستندات OpenAPI
     var xmlFile = "OpenAPI.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
@@ -158,31 +140,28 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())
 //{
-    // مپ کردن endpoint برای مستندات OpenAPI (برای Scalar)
-    app.MapOpenApi();
+// مپ کردن endpoint برای مستندات OpenAPI (برای Scalar)
+app.MapOpenApi();
 
-    // افزودن رابط کاربری Scalar در مسیر /scalar
-    app.MapScalarApiReference("/scalar", options =>
-    {
-        options.WithTitle("My API Documentation")
-               .WithDownloadButton(true)
-               .WithTheme(ScalarTheme.Purple)
-               .WithSidebar(true);
-    });
+// افزودن رابط کاربری Scalar در مسیر /scalar
+app.MapScalarApiReference("/scalar", options =>
+{
+    options.WithTitle("My API Documentation");
+});
 
-    // فعال‌سازی Swagger و تنظیم Swagger UI
-    app.UseSwagger(c =>
-    {
-        c.OpenApiVersion = OpenApiSpecVersion.OpenApi2_0;
-    });
-    app.UseSwaggerUI(options =>
-    {
-        options.SwaggerEndpoint("/swagger/v1/swagger.json", "My API Documentation");
-        options.DocumentTitle = "My API Documentation";
-        options.DocExpansion(DocExpansion.None);
-        options.RoutePrefix = "swagger"; // Swagger UI در مسیر /swagger
-        options.DisplayRequestDuration();
-    });
+// فعال‌سازی Swagger و تنظیم Swagger UI
+app.UseSwagger(c =>
+{
+    c.OpenApiVersion = OpenApiSpecVersion.OpenApi2_0;
+});
+app.UseSwaggerUI(options =>
+{
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "My API Documentation");
+    options.DocumentTitle = "My API Documentation";
+    options.DocExpansion(DocExpansion.None);
+    options.RoutePrefix = "swagger"; // Swagger UI در مسیر /swagger
+    options.DisplayRequestDuration();
+});
 //}
 
 //app.UseHttpsRedirection();
