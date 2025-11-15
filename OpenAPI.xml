@@ -32,6 +32,44 @@
             تنظیمات
             </summary>
         </member>
+        <member name="T:UI_OpenAPI.Config.Extentions.AddAuthenticationJWTExtention">
+            <summary>
+            مراحل اهراز هویت برای لاگین
+            </summary>
+        </member>
+        <member name="M:UI_OpenAPI.Config.Extentions.AddAuthenticationJWTExtention.AddAuthenticationJWT(Microsoft.Extensions.DependencyInjection.IServiceCollection,UI_OpenAPI.Config.AppSettings)">
+            <summary>
+            دسته بندی احرهز هویت
+            </summary>
+            <param name="services"></param>
+            <param name="appSettings"></param>
+            <returns></returns>
+            <exception cref="T:System.InvalidOperationException"></exception>
+        </member>
+        <member name="T:UI_OpenAPI.Config.Extentions.ScalarExtention">
+            <summary>
+            کلاس افزودنی برای پیکربندی Scalar
+            </summary>
+        </member>
+        <member name="M:UI_OpenAPI.Config.Extentions.ScalarExtention.AddScalarService(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            سرویس Scalar
+            </summary>
+            <param name="services"></param>
+            <returns></returns>
+        </member>
+        <member name="T:UI_OpenAPI.Config.Extentions.SwaggerExtention">
+            <summary>
+            // اتصال فایل XML به مستندات OpenAPI و افزودن احراز هویت Bearer برای Swagger UI
+            </summary>
+        </member>
+        <member name="M:UI_OpenAPI.Config.Extentions.SwaggerExtention.AddSwaggerService(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            افزودن Swagger به خدمات
+            </summary>
+            <param name="services"></param>
+            <returns></returns>
+        </member>
         <member name="T:UI_OpenAPI.Controllers.WeatherForecastController">
             <summary>
             کنترلر پیش‌بینی آب و هوا

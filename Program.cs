@@ -1,14 +1,15 @@
-﻿using System.Globalization;
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
-using Scalar.AspNetCore;
-using Microsoft.OpenApi;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi;
+using Scalar.AspNetCore;
 using Swashbuckle.AspNetCore.SwaggerUI;
+using System.Globalization;
+using System.Text;
 using UI_OpenAPI.Config;
+using UI_OpenAPI.Config.Extentions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,23 +41,7 @@ builder.Services.Configure<AppSettings>(appSettingsSection);
 var appSettings = appSettingsSection.Get<AppSettings>();
 
 // افزودن احراز هویت JWT
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ValidIssuer = appSettings?.JwtIssuer ?? throw new InvalidOperationException("JwtIssuer is not configured"),
-        ValidAudience = appSettings?.JwtAudience ?? throw new InvalidOperationException("JwtAudience is not configured"),
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(appSettings?.JwtKey ?? throw new InvalidOperationException("JwtKey is not configured")))
-    };
-});
+builder.Services.AddAuthenticationJWT(appSettings!);
 
 // دریافت اطلاعات از حافظه کش
 builder.Services.AddMemoryCache();
@@ -66,68 +51,10 @@ builder.Services.AddControllers();
 
 // افزودن سرویس‌های لازم برای مستندات OpenAPI
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddOpenApi(options =>
-{
-    options.AddDocumentTransformer((doc, context, cancellationToken) =>
-    {
-        doc.Info.Title = "مستندات API سایه بان";
-        doc.Info.Version = "v1";
-        doc.Info.Description = "API documentation for the application";
-
-        // افزودن طرح امنیتی Bearer JWT برای Scalar
-        doc.Components ??= new OpenApiComponents();
-        doc.Components.SecuritySchemes ??= new Dictionary<string, IOpenApiSecurityScheme>();
-        doc.Components.SecuritySchemes["Bearer"] = new OpenApiSecurityScheme
-        {
-            Type = SecuritySchemeType.Http,
-            Scheme = "bearer",
-            BearerFormat = "JWT",
-            Description = "JWT Authorization header using the Bearer scheme. Enter your token below (without 'Bearer')."
-        };
-
-        // اعمال قفل سراسری به تمام عملیات‌ها
-        doc.Security ??= new List<OpenApiSecurityRequirement>();
-
-
-        return Task.CompletedTask;
-    });
-});
+builder.Services.AddScalarService();
 
 // اتصال فایل XML به مستندات OpenAPI و افزودن احراز هویت Bearer برای Swagger UI
-builder.Services.AddSwaggerGen(options =>
-{
-    // تعریف مستندات OpenAPI برای Swagger
-    options.SwaggerDoc("v1", new OpenApiInfo
-    {
-        Title = "مستندات API سایه بان",
-        Version = "v1",
-        Description = "API documentation for the application with JWT authentication"
-    });
-
-    // افزودن طرح امنیتی Bearer JWT برای Swagger UI
-    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-    {
-        Name = "Authorization",
-        Type = SecuritySchemeType.Http,
-        Scheme = "Bearer",
-        BearerFormat = "JWT",
-        In = ParameterLocation.Header,
-        Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\""
-    });
-
-    options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
-    {
-        [new OpenApiSecuritySchemeReference("Bearer", document)] = []
-    });
-    // اتصال فایل XML به مستندات OpenAPI
-    var xmlFile = "OpenAPI.xml";
-    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-    if (!File.Exists(xmlPath))
-    {
-        Console.WriteLine($"Warning: XML documentation file not found at: {xmlPath}");
-    }
-    options.IncludeXmlComments(xmlPath, includeControllerXmlComments: true);
-});
+builder.Services.AddSwaggerService();
 
 var app = builder.Build();
 
