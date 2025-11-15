@@ -4,6 +4,14 @@
         <name>UI_OpenAPI</name>
     </assembly>
     <members>
+        <member name="T:UI_OpenAPI.Config.AppSettings">
+            <summary>
+            Represents application configuration settings related to authentication and other customizable options.
+            </summary>
+            <remarks>This class is typically used to bind configuration values from sources such as appsettings.json or
+            environment variables. It provides properties for JWT authentication parameters and additional settings that may be
+            required by the application.</remarks>
+        </member>
         <member name="P:UI_OpenAPI.Config.AppSettings.JwtIssuer">
             <summary>
             اهراز اطلاعات
@@ -72,6 +80,11 @@
         <member name="P:UI_OpenAPI.WeatherForecast.Summary">
             <summary>
             شرح وضعیت آب و هوا
+            </summary>
+        </member>
+        <member name="T:Program">
+            <summary>
+            Auto-generated public partial Program class for top-level statement apps.
             </summary>
         </member>
     </members>

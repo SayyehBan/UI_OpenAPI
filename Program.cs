@@ -156,8 +156,8 @@ builder.Services.AddSwaggerGen(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     // مپ کردن endpoint برای مستندات OpenAPI (برای Scalar)
     app.MapOpenApi();
 
@@ -183,9 +183,9 @@ if (app.Environment.IsDevelopment())
         options.RoutePrefix = "swagger"; // Swagger UI در مسیر /swagger
         options.DisplayRequestDuration();
     });
-}
+//}
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

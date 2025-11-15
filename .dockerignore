@@ -1,0 +1,91 @@
+# .dockerignore for C#/.NET project
+# Language-specific (C#/.NET)
+bin/
+obj/
+*.user
+*.suo
+*.pdb
+*.cache
+*.vspscc
+*.vssscc
+*.dbmdl
+*.psess
+*.vsp
+*.vsscc
+*.ncb
+*.sdf
+*.opensdf
+*.log
+*.ldf
+*.mdf
+*.v12.suo
+*.DS_Store
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Build outputs and temp
+build/
+dist/
+out/
+tmp/
+temp/
+*.tmp
+
+# Test and debug artifacts
+test/
+tests/
+debug/
+*.coverage
+*.test
+
+# Version control
+.git/
+.gitignore
+.svn/
+.hg/
+
+# Environment and secrets
+.env*
+*.env
+*.pem
+*.key
+*.crt
+config.local.*
+*.local.yml
+.local/
+local/
+
+# Documentation and markdown
+docs/
+*.md
+README*
+
+# Docker and compose files
+Dockerfile*
+docker-compose*
+compose.yaml
+
+# Node.js, Python, Go, Java (for completeness)
+node_modules/
+npm-debug.log
+yarn-debug.log
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+/vendor/
+.go-cache/
+*.class
+target/
+.gradle/
+
+# Project-specific
+Properties/PublishProfiles/*.user
+
+# Exclude everything in bin/ and obj/ recursively
+**/bin/
+**/obj/
