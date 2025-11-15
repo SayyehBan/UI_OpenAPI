@@ -70,7 +70,7 @@ builder.Services.AddOpenApi(options =>
 {
     options.AddDocumentTransformer((doc, context, cancellationToken) =>
     {
-        doc.Info.Title = "My API Documentation";
+        doc.Info.Title = "مستندات API سایه بان";
         doc.Info.Version = "v1";
         doc.Info.Description = "API documentation for the application";
 
@@ -99,7 +99,7 @@ builder.Services.AddSwaggerGen(options =>
     // تعریف مستندات OpenAPI برای Swagger
     options.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "My API Documentation",
+        Title = "مستندات API سایه بان",
         Version = "v1",
         Description = "API documentation for the application with JWT authentication"
     });
@@ -107,23 +107,17 @@ builder.Services.AddSwaggerGen(options =>
     // افزودن طرح امنیتی Bearer JWT برای Swagger UI
     options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
+        Name = "Authorization",
         Type = SecuritySchemeType.Http,
-        Scheme = "bearer",
+        Scheme = "Bearer",
         BearerFormat = "JWT",
-        Description = "JWT Authorization header using the Bearer scheme. Enter your token below (without 'Bearer')."
+        In = ParameterLocation.Header,
+        Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\""
     });
 
-    // اعمال احراز هویت JWT به تمام عملیات‌ها در Swagger UI
-    options.AddSecurityDefinition("bearer", new OpenApiSecurityScheme
-    {
-        Type = SecuritySchemeType.Http,
-        Scheme = "bearer",
-        BearerFormat = "JWT",
-        Description = "JWT Authorization header using the Bearer scheme."
-    });
     options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
     {
-        [new OpenApiSecuritySchemeReference("bearer", document)] = []
+        [new OpenApiSecuritySchemeReference("Bearer", document)] = []
     });
     // اتصال فایل XML به مستندات OpenAPI
     var xmlFile = "OpenAPI.xml";
@@ -146,21 +140,23 @@ app.MapOpenApi();
 // افزودن رابط کاربری Scalar در مسیر /scalar
 app.MapScalarApiReference("/scalar", options =>
 {
-    options.WithTitle("My API Documentation");
+    options.WithTitle("مستندات API سایه بان");
 });
 
 // فعال‌سازی Swagger و تنظیم Swagger UI
 app.UseSwagger(c =>
 {
-    c.OpenApiVersion = OpenApiSpecVersion.OpenApi2_0;
+    c.OpenApiVersion = OpenApiSpecVersion.OpenApi3_1;
 });
 app.UseSwaggerUI(options =>
 {
-    options.SwaggerEndpoint("/swagger/v1/swagger.json", "My API Documentation");
-    options.DocumentTitle = "My API Documentation";
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "مستندات API سایه بان");
+    options.DocumentTitle = "مستندات API سایه بان";
     options.DocExpansion(DocExpansion.None);
     options.RoutePrefix = "swagger"; // Swagger UI در مسیر /swagger
     options.DisplayRequestDuration();
+    options.EnablePersistAuthorization();
+    options.EnableFilter();
 });
 //}
 
