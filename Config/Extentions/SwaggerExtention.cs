@@ -22,7 +22,13 @@ public static class SwaggerExtention
                 Version = "v1",
                 Description = "API documentation for the application with JWT authentication"
             });
-
+            // تعریف مستندات OpenAPI برای Swagger
+            options.SwaggerDoc("v2", new OpenApiInfo
+            {
+                Title = "مستندات API سایه بان",
+                Version = "v2",
+                Description = "API documentation for the application with JWT authentication"
+            });
             // افزودن طرح امنیتی Bearer JWT برای Swagger UI
             options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {

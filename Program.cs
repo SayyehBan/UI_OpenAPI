@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Asp.Versioning;
+using Asp.Versioning.ApiExplorer;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
@@ -55,6 +57,25 @@ builder.Services.AddScalarService();
 
 // اتصال فایل XML به مستندات OpenAPI و افزودن احراز هویت Bearer برای Swagger UI
 builder.Services.AddSwaggerService();
+// تنظیم ورژن‌بندی API - سازگار با Asp.Versioning 8.1.0
+builder.Services.AddApiVersioning(options =>
+{
+    options.DefaultApiVersion = new ApiVersion(1, 0);
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.ReportApiVersions = true;
+
+    // فقط از URL segment استفاده کن (بدون header یا query parameter)
+    options.ApiVersionReader = ApiVersionReader.Combine(
+        new UrlSegmentApiVersionReader()
+    );
+})
+.AddApiExplorer(options =>
+{
+    options.GroupNameFormat = "'v'VVV";
+    options.SubstituteApiVersionInUrl = true;
+    options.DefaultApiVersion = new ApiVersion(1, 0);
+    options.AssumeDefaultVersionWhenUnspecified = true;
+});
 
 var app = builder.Build();
 
@@ -76,8 +97,13 @@ app.UseSwagger(c =>
     c.OpenApiVersion = OpenApiSpecVersion.OpenApi3_1;
 });
 app.UseSwaggerUI(options =>
-{
-    options.SwaggerEndpoint("/swagger/v1/swagger.json", "مستندات API سایه بان");
+{    // به‌صورت خودکار ورژن‌ها رو از IApiVersionDescriptionProvider بگیر
+var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+    foreach (var description in provider.ApiVersionDescriptions)
+    {
+        options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json",
+            $"مستندات API سایه بان - {description.GroupName.ToUpperInvariant()}");
+    }
     options.DocumentTitle = "مستندات API سایه بان";
     options.DocExpansion(DocExpansion.None);
     options.RoutePrefix = "swagger"; // Swagger UI در مسیر /swagger

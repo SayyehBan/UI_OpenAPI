@@ -70,29 +70,66 @@
             <param name="services"></param>
             <returns></returns>
         </member>
-        <member name="T:UI_OpenAPI.Controllers.WeatherForecastController">
+        <member name="T:UI_OpenAPI.Controllers.V1.WeatherForecastController">
             <summary>
             کنترلر پیش‌بینی آب و هوا
             </summary>
         </member>
-        <member name="M:UI_OpenAPI.Controllers.WeatherForecastController.#ctor(Microsoft.Extensions.Logging.ILogger{UI_OpenAPI.Controllers.WeatherForecastController})">
+        <member name="M:UI_OpenAPI.Controllers.V1.WeatherForecastController.#ctor(Microsoft.Extensions.Logging.ILogger{UI_OpenAPI.Controllers.V1.WeatherForecastController})">
             <summary>
             سازنده کنترلر پیش‌بینی آب و هوا
             </summary>
             <param name="logger"></param>
         </member>
-        <member name="M:UI_OpenAPI.Controllers.WeatherForecastController.GetWeatherForecast(UI_OpenAPI.WeatherForecast)">
+        <member name="M:UI_OpenAPI.Controllers.V1.WeatherForecastController.GetWeatherForecast(UI_OpenAPI.WeatherForecast)">
             <summary>
             متد برای دریافت پیش‌بینی آب و هوا
             </summary>
             <param name="model"></param>
             <returns></returns>
         </member>
-        <member name="M:UI_OpenAPI.Controllers.WeatherForecastController.PostWeatherForecast(UI_OpenAPI.WeatherForecast)">
+        <member name="M:UI_OpenAPI.Controllers.V1.WeatherForecastController.PostWeatherForecast(UI_OpenAPI.WeatherForecast)">
             <summary>
             ثبت وضعیت
             </summary>
             <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UI_OpenAPI.Controllers.V1.WeatherForecastController.ShowVersion">
+            <summary>
+            Version 1
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:UI_OpenAPI.Controllers.V2.WeatherForecastController">
+            <summary>
+            کنترلر پیش‌بینی آب و هوا
+            </summary>
+        </member>
+        <member name="M:UI_OpenAPI.Controllers.V2.WeatherForecastController.#ctor(Microsoft.Extensions.Logging.ILogger{UI_OpenAPI.Controllers.V2.WeatherForecastController})">
+            <summary>
+            سازنده کنترلر پیش‌بینی آب و هوا
+            </summary>
+            <param name="logger"></param>
+        </member>
+        <member name="M:UI_OpenAPI.Controllers.V2.WeatherForecastController.GetWeatherForecast(UI_OpenAPI.WeatherForecast)">
+            <summary>
+            متد برای دریافت پیش‌بینی آب و هوا
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UI_OpenAPI.Controllers.V2.WeatherForecastController.PostWeatherForecast(UI_OpenAPI.WeatherForecast)">
+            <summary>
+            ثبت وضعیت
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UI_OpenAPI.Controllers.V2.WeatherForecastController.ShowVersion">
+            <summary>
+            Version 2
+            </summary>
             <returns></returns>
         </member>
         <member name="T:UI_OpenAPI.WeatherForecast">

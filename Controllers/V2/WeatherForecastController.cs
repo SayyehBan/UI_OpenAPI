@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Asp.Versioning;
+using Microsoft.AspNetCore.Mvc;
 
-namespace UI_OpenAPI.Controllers
+namespace UI_OpenAPI.Controllers.V2
 {
     /// <summary>
     /// کنترلر پیش‌بینی آب و هوا
     /// </summary>
+    [ApiVersion("2")]
     [ApiController]
     [Route("api/[controller]/[action]")]
     public class WeatherForecastController : ControllerBase
@@ -53,6 +55,15 @@ namespace UI_OpenAPI.Controllers
             }
             // Do something with the model
             return Ok(model);
+        }
+        /// <summary>
+        /// Version 2
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("version")]
+        public ActionResult<string> ShowVersion()
+        {
+            return Ok("V2");
         }
     }
 }
