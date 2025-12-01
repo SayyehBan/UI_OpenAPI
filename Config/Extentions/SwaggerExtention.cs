@@ -1,4 +1,5 @@
 ﻿using Microsoft.OpenApi;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace UI_OpenAPI.Config.Extentions;
 /// <summary>
@@ -13,19 +14,22 @@ public static class SwaggerExtention
     /// <returns></returns>
     public static IServiceCollection AddSwaggerService(this IServiceCollection services)
     {
+        var documentFilter = new DocumentFilter();
+        var operationFilter = new OperationFilter();
+
         services.AddSwaggerGen(options =>
         {
-            // تعریف مستندات OpenAPI برای Swagger
+            //// تعریف مستندات OpenAPI برای Swagger
             options.SwaggerDoc("v1", new OpenApiInfo
             {
-                Title = "مستندات API سایه بان",
+                Title = "مستندات ورژن 1 API سایه بان",
                 Version = "v1",
                 Description = "API documentation for the application with JWT authentication"
             });
             // تعریف مستندات OpenAPI برای Swagger
             options.SwaggerDoc("v2", new OpenApiInfo
             {
-                Title = "مستندات API سایه بان",
+                Title = "مستندات ورژن 2 API سایه بان",
                 Version = "v2",
                 Description = "API documentation for the application with JWT authentication"
             });
@@ -52,6 +56,8 @@ public static class SwaggerExtention
                 Console.WriteLine($"Warning: XML documentation file not found at: {xmlPath}");
             }
             options.IncludeXmlComments(xmlPath, includeControllerXmlComments: true);
+            options.AddDocumentFilterInstance(documentFilter);
+            options.AddOperationFilterInstance(operationFilter);
         });
 
         return services;

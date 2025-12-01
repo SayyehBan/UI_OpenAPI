@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using Scalar.AspNetCore;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System.Globalization;
 using System.Text;
@@ -83,6 +84,7 @@ var app = builder.Build();
 //if (app.Environment.IsDevelopment())
 //{
 // مپ کردن endpoint برای مستندات OpenAPI (برای Scalar)
+app.UseSwagger();
 app.MapOpenApi();
 
 // افزودن رابط کاربری Scalar در مسیر /scalar
@@ -97,25 +99,61 @@ app.UseSwagger(c =>
     c.OpenApiVersion = OpenApiSpecVersion.OpenApi3_1;
 });
 app.UseSwaggerUI(options =>
-{    // به‌صورت خودکار ورژن‌ها رو از IApiVersionDescriptionProvider بگیر
-var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+{
+    // به‌صورت خودکار ورژن‌ها رو از IApiVersionDescriptionProvider بگیر
+    var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
     foreach (var description in provider.ApiVersionDescriptions)
     {
         options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json",
-            $"مستندات API سایه بان - {description.GroupName.ToUpperInvariant()}");
+            $"سایه بان - {description.GroupName.ToUpperInvariant()}");
+  
     }
-    options.DocumentTitle = "مستندات API سایه بان";
-    options.DocExpansion(DocExpansion.None);
-    options.RoutePrefix = "swagger"; // Swagger UI در مسیر /swagger
-    options.DisplayRequestDuration();
-    options.EnablePersistAuthorization();
-    options.EnableFilter();
+      options.DocumentTitle = "مستندات API سایه بان";
+        options.DocExpansion(DocExpansion.None);
+        options.RoutePrefix = "swagger"; // Swagger UI در مسیر /swagger
+        options.DisplayRequestDuration();
+        options.EnablePersistAuthorization();
+        options.EnableFilter();
 });
 //}
 
-//app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+/// <summary>
+/// فیلترمستندات
+/// </summary>
+public class DocumentFilter : IDocumentFilter
+{
+    static int count;
+    /// <summary>
+    /// فیلترمستندات
+    /// </summary>
+    public DocumentFilter() { Thread.Sleep(20); Console.WriteLine("DocumentFilter " + count++); }
+    /// <summary>
+    /// اعمال
+    /// </summary>
+    /// <param name="swaggerDoc"></param>
+    /// <param name="context"></param>
+    public void Apply(OpenApiDocument swaggerDoc, DocumentFilterContext context) { }
+}
+/// <summary>
+/// فیلتر عملیات
+/// </summary>
+public class OperationFilter : IOperationFilter
+{
+    static int count;
+    /// <summary>
+    /// فیلتر عملیات
+    /// </summary>
+    public OperationFilter() { Thread.Sleep(20); Console.WriteLine("OperationFilter " + count++); }
+    /// <summary>
+    /// اعمال
+    /// </summary>
+    /// <param name="operation"></param>
+    /// <param name="context"></param>
+    public void Apply(OpenApiOperation operation, OperationFilterContext context) { }
+}

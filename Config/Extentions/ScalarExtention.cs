@@ -11,7 +11,7 @@ public static class ScalarExtention
     /// </summary>
     /// <param name="services"></param>
     /// <returns></returns>
-    public static IServiceCollection AddScalarService(this IServiceCollection services)
+    public static IServiceCollection AddScalarService(this IServiceCollection services) 
     {
         services.AddOpenApi(options =>
         {
@@ -34,7 +34,6 @@ public static class ScalarExtention
 
                 // اعمال قفل سراسری به تمام عملیات‌ها
                 doc.Security ??= new List<OpenApiSecurityRequirement>();
-
 
                 return Task.CompletedTask;
             });

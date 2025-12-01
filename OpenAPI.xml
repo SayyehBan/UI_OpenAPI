@@ -162,6 +162,40 @@
             Auto-generated public partial Program class for top-level statement apps.
             </summary>
         </member>
+        <member name="T:DocumentFilter">
+            <summary>
+            فیلترمستندات
+            </summary>
+        </member>
+        <member name="M:DocumentFilter.#ctor">
+            <summary>
+            فیلترمستندات
+            </summary>
+        </member>
+        <member name="M:DocumentFilter.Apply(Microsoft.OpenApi.OpenApiDocument,Swashbuckle.AspNetCore.SwaggerGen.DocumentFilterContext)">
+            <summary>
+            اعمال
+            </summary>
+            <param name="swaggerDoc"></param>
+            <param name="context"></param>
+        </member>
+        <member name="T:OperationFilter">
+            <summary>
+            فیلتر عملیات
+            </summary>
+        </member>
+        <member name="M:OperationFilter.#ctor">
+            <summary>
+            فیلتر عملیات
+            </summary>
+        </member>
+        <member name="M:OperationFilter.Apply(Microsoft.OpenApi.OpenApiOperation,Swashbuckle.AspNetCore.SwaggerGen.OperationFilterContext)">
+            <summary>
+            اعمال
+            </summary>
+            <param name="operation"></param>
+            <param name="context"></param>
+        </member>
         <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.CreateDocumentationId(System.Type)">
             <summary>
             Generates a documentation comment ID for a type.
