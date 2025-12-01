@@ -8,7 +8,7 @@ namespace UI_OpenAPI.Controllers.V2
     /// </summary>
     [ApiVersion("2")]
     [ApiController]
-    [Route("api/[controller]/[action]")]
+    [Route("api/v{version:apiVersion=2}/[controller]/[action]")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
