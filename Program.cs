@@ -1,16 +1,15 @@
 ﻿using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Asp.Versioning.Builder;
+using Asp.Versioning.Conventions;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using Scalar.AspNetCore;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System.Globalization;
-using System.Text;
 using UI_OpenAPI.Config;
 using UI_OpenAPI.Config.Extentions;
 
@@ -58,25 +57,7 @@ builder.Services.AddScalarService();
 
 // اتصال فایل XML به مستندات OpenAPI و افزودن احراز هویت Bearer برای Swagger UI
 builder.Services.AddSwaggerService();
-// تنظیم ورژن‌بندی API - سازگار با Asp.Versioning 8.1.0
-builder.Services.AddApiVersioning(options =>
-{
-    options.DefaultApiVersion = new ApiVersion(1, 0);
-    options.AssumeDefaultVersionWhenUnspecified = true;
-    options.ReportApiVersions = true;
 
-    // فقط از URL segment استفاده کن (بدون header یا query parameter)
-    options.ApiVersionReader = ApiVersionReader.Combine(
-        new UrlSegmentApiVersionReader()
-    );
-})
-.AddApiExplorer(options =>
-{
-    options.GroupNameFormat = "'v'VVV";
-    options.SubstituteApiVersionInUrl = true;
-    options.DefaultApiVersion = new ApiVersion(1, 0);
-    options.AssumeDefaultVersionWhenUnspecified = true;
-});
 
 var app = builder.Build();
 
@@ -85,13 +66,11 @@ var app = builder.Build();
 //{
 // مپ کردن endpoint برای مستندات OpenAPI (برای Scalar)
 app.UseSwagger();
+ApiVersionSet versions = app.NewApiVersionSet().HasApiVersion(1.0).Build();
 app.MapOpenApi();
 
 // افزودن رابط کاربری Scalar در مسیر /scalar
-app.MapScalarApiReference("/scalar", options =>
-{
-    options.WithTitle("مستندات API سایه بان");
-});
+app.MapScalarApiReference().WithApiVersionSet(versions).MapToApiVersion(1.0);
 
 // فعال‌سازی Swagger و تنظیم Swagger UI
 app.UseSwagger(c =>

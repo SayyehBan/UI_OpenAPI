@@ -1,4 +1,5 @@
-﻿using Microsoft.OpenApi;
+﻿using Asp.Versioning;
+using Microsoft.OpenApi;
 
 namespace UI_OpenAPI.Config.Extentions;
 /// <summary>
@@ -20,7 +21,7 @@ public static class ScalarExtention
                 doc.Info.Title = "مستندات API سایه بان";
                 doc.Info.Version = "v1";
                 doc.Info.Description = "API documentation for the application";
-
+                
                 // افزودن طرح امنیتی Bearer JWT برای Scalar
                 doc.Components ??= new OpenApiComponents();
                 doc.Components.SecuritySchemes ??= new Dictionary<string, IOpenApiSecurityScheme>();
@@ -37,6 +38,25 @@ public static class ScalarExtention
 
                 return Task.CompletedTask;
             });
+        });
+        // تنظیم ورژن‌بندی API - سازگار با Asp.Versioning 8.1.0
+        services.AddApiVersioning(options =>
+        {
+            options.DefaultApiVersion = new ApiVersion(1, 0);
+            options.AssumeDefaultVersionWhenUnspecified = true;
+            options.ReportApiVersions = true;
+
+            // فقط از URL segment استفاده کن (بدون header یا query parameter)
+            options.ApiVersionReader = ApiVersionReader.Combine(
+                new UrlSegmentApiVersionReader()
+            );
+        })
+        .AddApiExplorer(options =>
+        {
+            options.GroupNameFormat = "'v'VVV";
+            options.SubstituteApiVersionInUrl = true;
+            options.DefaultApiVersion = new ApiVersion(1, 0);
+            options.AssumeDefaultVersionWhenUnspecified = true;
         });
         return services;
     }
