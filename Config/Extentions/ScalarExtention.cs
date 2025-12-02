@@ -12,8 +12,10 @@ public static class ScalarExtention
     /// </summary>
     /// <param name="services"></param>
     /// <returns></returns>
-    public static IServiceCollection AddScalarService(this IServiceCollection services) 
+    public static IServiceCollection AddScalarService(this IServiceCollection services)
     {
+        services.AddOpenApi("v1");
+        services.AddOpenApi("v2");
         services.AddOpenApi(options =>
         {
             options.AddDocumentTransformer((doc, context, cancellationToken) =>
@@ -21,7 +23,7 @@ public static class ScalarExtention
                 doc.Info.Title = "مستندات API سایه بان";
                 doc.Info.Version = "v1";
                 doc.Info.Description = "API documentation for the application";
-                
+
                 // افزودن طرح امنیتی Bearer JWT برای Scalar
                 doc.Components ??= new OpenApiComponents();
                 doc.Components.SecuritySchemes ??= new Dictionary<string, IOpenApiSecurityScheme>();
@@ -35,7 +37,6 @@ public static class ScalarExtention
 
                 // اعمال قفل سراسری به تمام عملیات‌ها
                 doc.Security ??= new List<OpenApiSecurityRequirement>();
-
                 return Task.CompletedTask;
             });
         });
@@ -48,7 +49,9 @@ public static class ScalarExtention
 
             // فقط از URL segment استفاده کن (بدون header یا query parameter)
             options.ApiVersionReader = ApiVersionReader.Combine(
-                new UrlSegmentApiVersionReader()
+                new UrlSegmentApiVersionReader(),
+                new HeaderApiVersionReader("x-api-version"),
+                new QueryStringApiVersionReader("api-version")
             );
         })
         .AddApiExplorer(options =>
