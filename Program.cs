@@ -65,10 +65,9 @@ var app = builder.Build();
 //if (app.Environment.IsDevelopment())
 //{
 // مپ کردن endpoint برای مستندات OpenAPI (برای Scalar)
-app.UseSwagger();
-ApiVersionSet versions = app.NewApiVersionSet().HasApiVersion(1.0).Build();
 app.MapOpenApi();
 
+ApiVersionSet versions = app.NewApiVersionSet().HasApiVersion(1.0).Build();
 // افزودن رابط کاربری Scalar در مسیر /scalar
 app.MapScalarApiReference().WithApiVersionSet(versions).MapToApiVersion(1.0);
 

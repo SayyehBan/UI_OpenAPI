@@ -1,5 +1,4 @@
 ﻿using Microsoft.OpenApi;
-using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace UI_OpenAPI.Config.Extentions;
 /// <summary>
